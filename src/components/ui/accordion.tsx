@@ -47,11 +47,11 @@ export function Accordion({
   return (
     <div className={cn("space-y-2", className)}>
       {React.Children.map(children, (child) => {
-        if (React.isValidElement(child) && child.type === AccordionItem) {
-          return React.cloneElement(child as React.ReactElement<AccordionItemProps>, {
+        if (React.isValidElement<AccordionItemProps>(child) && child.type === AccordionItem) {
+          return React.cloneElement(child, {
             isOpen: openItems.includes(child.props.value),
             onToggle: () => toggleItem(child.props.value),
-          })
+          } as Partial<AccordionItemProps & { isOpen?: boolean; onToggle?: () => void }>)
         }
         return child
       })}

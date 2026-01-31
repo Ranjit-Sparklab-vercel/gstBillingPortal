@@ -25,9 +25,18 @@ import {
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants";
+import { LucideIcon } from "lucide-react";
+
+// Menu Item Type
+type MenuItem = {
+  title: string;
+  href: string;
+  icon: LucideIcon;
+  exact: boolean;
+};
 
 // Main Dashboard Menu Items
-const mainMenuItems = [
+const mainMenuItems: MenuItem[] = [
   {
     title: "Dashboard",
     href: ROUTES.DASHBOARD,
@@ -61,7 +70,7 @@ const mainMenuItems = [
 ];
 
 // GST Billing Menu Items
-const gstMenuItems = [
+const gstMenuItems: MenuItem[] = [
   {
     title: "Overview",
     href: ROUTES.GST.ROOT,
@@ -101,7 +110,7 @@ const gstMenuItems = [
 ];
 
 // E-Way Bill Menu Items
-const ewayMenuItems = [
+const ewayMenuItems: MenuItem[] = [
   {
     title: "Overview",
     href: ROUTES.EWAY.ROOT,
@@ -123,7 +132,7 @@ const ewayMenuItems = [
 ];
 
 // E-Invoice Menu Items - Organized by priority and user workflow
-const einvoiceMenuItems = [
+const einvoiceMenuItems: MenuItem[] = [
   // 1. Overview - Dashboard/Home
   {
     title: "Overview",
@@ -214,7 +223,7 @@ export function Sidebar() {
   };
 
   // Determine which menu to show based on current route
-  let menuItems = mainMenuItems;
+  let menuItems: MenuItem[] = mainMenuItems;
   let moduleTitle = "GST Portal";
   let backToDashboard = false;
 
