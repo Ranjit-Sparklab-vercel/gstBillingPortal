@@ -1,0 +1,799 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* React DatePicker Styles */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__input-container input {
+  width: 100%;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent;
+  }
+  
+  .premium-shadow {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  .premium-glow {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+}
+
+/* E-Invoice Print Styles - EXACT Government Format */
+.einvoice-print-container {
+  max-width: 100%;
+}
+
+.einvoice-page {
+  width: 210mm; /* A4 width */
+  min-height: 297mm; /* A4 height */
+  margin: 0 auto;
+  padding: 3mm;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background: white;
+  color: black;
+  font-family: Arial, sans-serif;
+}
+
+.einvoice-page-inner {
+  border: 2px solid rgb(161, 161, 161);
+  border-radius: 5px;
+  padding: 2mm;
+}
+
+/* Header - EXACT as per Screenshot */
+.einvoice-header {
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  /* border: 2px solid rgb(161, 161, 161); */
+  min-height: 80px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+}
+
+.header-gstin {
+  font-size: 22px;
+  font-weight: bold;
+  color: black;
+  line-height: 1.3;
+}
+
+.header-name {
+  font-size: 22px;
+  font-weight: bold;
+  color: black;
+  line-height: 1.3;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.header-qrcode {
+  width: 130px;
+  height: 130px;
+  border: 1px solid #d0d0d0;
+}
+
+/* Section Titles */
+.section-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: black;
+  line-height: 1.2;
+}
+
+.einvoice-section {
+  margin-bottom: 10px;
+}
+
+/* Section with border - EXACT as per Screenshot */
+.einvoice-section-bordered {
+  border: 1px solid black;
+  padding: 6px 8px;
+}
+
+/* Labels and Values */
+.einvoice-label {
+  font-weight: bold;
+  color: black;
+  font-size: 14px;
+}
+
+.einvoice-value {
+  color: black;
+  font-size: 14px;
+}
+
+/* Section 1: e-Invoice Details - Table Style */
+.einvoice-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.einvoice-details-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  text-align: left;
+  padding: 4px 8px;
+  border-bottom: 1px solid black;
+  background-color: #f0f0f0;
+}
+
+.einvoice-detail-cell-left {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: none;
+  padding: 4px 8px;
+  width: 50%;
+  vertical-align: top;
+}
+
+.einvoice-detail-cell-right {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  border-left: none;
+  padding: 4px 8px;
+  width: 50%;
+  vertical-align: top;
+}
+
+.einvoice-label-spaced {
+  margin-left: 8px;
+}
+
+/* Section 2: Transaction Details - Table Style */
+.transaction-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.transaction-details-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  text-align: left;
+  padding: 4px 8px;
+  border-bottom: 1px solid black;
+  background-color: #f0f0f0;
+}
+
+.transaction-detail-cell {
+  border-top: 1px solid #d0d0d0;
+  border-bottom: 1px solid #d0d0d0;
+  border-left: 1px solid black;
+  border-right: none;
+  padding: 4px 8px;
+  width: 50%;
+  vertical-align: top;
+}
+
+.transaction-detail-cell:first-child {
+  border-right: none;
+}
+
+.transaction-detail-cell:last-child {
+  border-left: none;
+  border-right: 1px solid black;
+}
+
+/* Last row - bottom border black */
+.transaction-details-table tbody tr:last-child .transaction-detail-cell {
+  border-bottom: 1px solid black;
+}
+
+.transaction-detail-cell[colspan="2"] {
+  width: 100%;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+/* Last row with colspan - bottom border black */
+.transaction-details-table tbody tr:last-child .transaction-detail-cell[colspan="2"] {
+  border-bottom: 1px solid black;
+}
+
+/* Section 3: Party Details - Table Style */
+.party-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.party-details-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  text-align: left;
+  padding: 4px 8px;
+  border-bottom: 1px solid black;
+  background-color: #f0f0f0;
+}
+
+.party-block-cell {
+  border-right: 1px solid black;
+  padding: 6px 8px;
+  width: 33.33%;
+  vertical-align: top;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.party-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.party-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.party-name {
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Section 4: Details of Goods / Services - Separate Table */
+.goods-services-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.goods-services-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  text-align: left;
+  padding: 4px 8px;
+  border-bottom: 1px solid black;
+  background-color: #f0f0f0;
+}
+
+.goods-services-content-cell {
+  border: none;
+  padding: 4px 8px;
+  vertical-align: top;
+}
+
+/* Summary of Amounts - Separate Table */
+.summary-amounts-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.summary-amounts-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  text-align: left;
+  padding: 4px 8px;
+  border-bottom: 1px solid black;
+  background-color: #f0f0f0;
+}
+
+.summary-amounts-content-cell {
+  border: none;
+  padding: 4px 8px;
+  vertical-align: top;
+}
+
+/* Section 4: Items Table */
+.items-table-container {
+  margin-top: 4px;
+  overflow-x: visible;
+}
+
+.einvoice-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+  font-size: 11px;
+}
+
+.einvoice-items-table th,
+.einvoice-items-table td {
+  border: 1px solid black;
+  padding: 3px 4px;
+  text-align: left;
+}
+
+.einvoice-items-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+  text-align: center;
+  font-size: 12px;
+}
+
+.tax-rate-header {
+  font-size: 10px;
+  line-height: 1.1;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.tax-rate-cell {
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+/* Summary Table */
+.summary-container {
+  margin-top: 6px;
+}
+
+.summary-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.einvoice-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+  font-size: 13px;
+}
+
+.einvoice-summary-table td {
+  border: 1px solid black;
+  padding: 3px 4px;
+}
+
+.summary-label {
+  font-weight: 600;
+  text-align: left;
+}
+
+.summary-value {
+  text-align: right;
+}
+
+.summary-label-total {
+  font-weight: bold;
+  text-align: left;
+}
+
+.summary-value-total {
+  font-weight: bold;
+  text-align: right;
+}
+
+/* Section 5: E-Waybill Details - Table Format */
+.ewaybill-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.ewaybill-details-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  text-align: left;
+  padding: 4px 8px;
+  border-bottom: 1px solid black;
+  background-color: #f0f0f0;
+}
+
+.ewaybill-detail-cell {
+  border: 1px solid black;
+  padding: 4px 8px;
+  width: 33.33%;
+  vertical-align: top;
+  font-size: 14px;
+}
+
+/* Footer - Table Format */
+.footer-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.footer-cell {
+  border: 1px solid black;
+  padding: 6px 8px;
+  width: 33.33%;
+  vertical-align: top;
+  font-size: 13px;
+}
+
+.footer-cell:first-child {
+  border-left: 1px solid black;
+  border-right: none;
+}
+
+.footer-cell:last-child {
+  border-right: 1px solid black;
+  border-left: none;
+  text-align: right;
+}
+
+.footer-cell:nth-child(2) {
+  text-align: center;
+  border-left: none;
+  border-right: none;
+}
+
+.ack-no-barcode {
+  font-weight: bold;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+.ewaybill-barcode-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.ewaybill-barcode {
+  max-width: 100%;
+  height: 60px;
+  image-rendering: crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.ewaybill-barcode-number {
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-top: 2px;
+}
+
+.esign-logo-container {
+  margin-bottom: 6px;
+  margin-right: 30px;
+  text-align: right;
+}
+
+.esign-logo {
+  height: 40px;
+  width: auto;
+  max-height: 40px;
+  display: inline-block;
+}
+
+/* Print Styles - EXACT Government Format */
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  /* Hide all dashboard layout elements - only show invoice */
+  /* Hide sidebar, topbar, navigation */
+  nav,
+  aside,
+  header:not(.einvoice-header),
+  [class*="sidebar"],
+  [class*="Sidebar"],
+  [class*="topbar"],
+  [class*="Topbar"] {
+    display: none !important;
+  }
+
+  /* Hide main wrapper padding and background */
+  main {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Hide all page content except einvoice-print-container */
+  main > div > *:not(.einvoice-print-container),
+  [class*="space-y-6"] > *:not(.einvoice-print-container),
+  [class*="container mx-auto"]:not(.einvoice-print-container) > *:not(.einvoice-print-container) {
+    display: none !important;
+  }
+
+  /* Only show E-Invoice content */
+  .einvoice-print-container {
+    background: white !important;
+    margin: 0 !important;
+    padding: 2mm !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+
+  .einvoice-page {
+    width: 100% !important;
+    min-height: auto !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 3mm !important;
+    page-break-after: avoid;
+  }
+
+  .einvoice-section {
+    page-break-inside: avoid;
+    margin-bottom: 8px;
+  }
+
+  .einvoice-items-table {
+    page-break-inside: avoid;
+  }
+
+  .einvoice-items-table tr {
+    page-break-inside: avoid;
+  }
+
+  .einvoice-summary-table {
+    page-break-inside: avoid;
+  }
+
+      .footer-table {
+        page-break-inside: avoid;
+        margin-top: 10px;
+      }
+
+  /* Font sizes for print - optimized for paper printing */
+  .section-title {
+    font-size: 15px !important;
+    margin-bottom: 4px !important;
+    font-weight: bold !important;
+  }
+
+  .einvoice-label,
+  .einvoice-value {
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+  }
+
+  .party-block {
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+  }
+
+  .party-title {
+    font-size: 11px !important;
+    font-weight: bold !important;
+  }
+
+  .einvoice-items-table {
+    font-size: 9px !important;
+  }
+
+  .einvoice-items-table th {
+    font-size: 10px !important;
+    font-weight: bold !important;
+    padding: 5px 4px !important;
+  }
+
+  .einvoice-items-table th,
+  .einvoice-items-table td {
+    padding: 4px 4px !important;
+    line-height: 1.3 !important;
+  }
+
+  .tax-rate-header {
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+  }
+
+  .tax-rate-cell {
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+  }
+
+  .einvoice-summary-table {
+    font-size: 10px !important;
+  }
+
+  .einvoice-summary-table td {
+    padding: 4px 5px !important;
+    line-height: 1.3 !important;
+  }
+
+  .einvoice-footer {
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+  }
+
+  .ack-no-barcode {
+    font-size: 11px !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .header-gstin,
+  .header-name {
+    font-size: 18px !important;
+    font-weight: bold !important;
+    line-height: 1.2 !important;
+  }
+
+  .einvoice-details-header,
+  .transaction-details-header,
+  .party-details-header,
+  .goods-services-header,
+  .summary-amounts-header,
+  .ewaybill-details-header {
+    font-size: 13px !important;
+    font-weight: bold !important;
+    padding: 5px 6px !important;
+  }
+
+  .einvoice-details-table,
+  .transaction-details-table,
+  .party-details-table,
+  .goods-services-table,
+  .summary-amounts-table,
+  .ewaybill-details-table,
+  .footer-table {
+    font-size: 10px !important;
+  }
+
+  .einvoice-detail-cell-left,
+  .einvoice-detail-cell-right,
+  .transaction-detail-cell {
+    padding: 4px 6px !important;
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+  }
+
+  .party-block-cell {
+    font-size: 10px !important;
+    padding: 5px 6px !important;
+    line-height: 1.3 !important;
+  }
+
+  .ewaybill-detail-cell {
+    font-size: 10px !important;
+    padding: 4px 6px !important;
+    line-height: 1.3 !important;
+  }
+
+  .footer-cell {
+    font-size: 10px !important;
+    padding: 5px 6px !important;
+    line-height: 1.3 !important;
+  }
+
+  .summary-title {
+    font-size: 12px !important;
+    font-weight: bold !important;
+  }
+
+  .esign-logo {
+    max-height: 40px !important;
+    height: 40px !important;
+    width: auto !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
