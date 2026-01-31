@@ -214,7 +214,7 @@ export default function LandingPage() {
             </ScrollAnimation>
             <ScrollAnimation delay={200}>
               <p className="mb-8 text-xl text-muted-foreground md:text-2xl animate-fade-in-up">
-                India's Best Accounting, GST Billing & Invoicing Software
+                India&apos;s Best Accounting, GST Billing & Invoicing Software
               </p>
             </ScrollAnimation>
             <ScrollAnimation delay={300}>
@@ -389,7 +389,7 @@ export default function LandingPage() {
                       ))}
                     </div>
                     <CardDescription className="text-base italic group-hover:text-foreground transition-colors">
-                      "{testimonial.content}"
+                      &ldquo;{testimonial.content}&rdquo;
                     </CardDescription>
                   </CardHeader>
                   <CardContent>

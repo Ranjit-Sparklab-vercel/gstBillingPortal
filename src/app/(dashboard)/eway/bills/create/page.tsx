@@ -19,6 +19,7 @@
 // React & Next.js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 // Form Management
 import { useForm, useFieldArray } from "react-hook-form";
@@ -612,7 +613,7 @@ export default function CreateEWayBillPage() {
               <div className="pt-4 border-t">
                 <Label className="text-muted-foreground">QR Code</Label>
                 <div className="mt-2">
-                  <img src={generatedEWayBill.qrCode} alt="QR Code" className="w-32 h-32" />
+                  <Image src={generatedEWayBill.qrCode} alt="QR Code" width={128} height={128} className="w-32 h-32" unoptimized />
                 </div>
               </div>
             )}
@@ -1032,7 +1033,7 @@ export default function CreateEWayBillPage() {
                 <p className="text-sm text-destructive">{errors.toGstin.message}</p>
               )}
               <p className="text-xs text-muted-foreground">
-                Enter 15 digit GSTIN or "URP" for unregistered person (B2C only)
+                Enter 15 digit GSTIN or &quot;URP&quot; for unregistered person (B2C only)
               </p>
             </div>
 

@@ -126,10 +126,13 @@ export function EInvoicePrintLayout({ data }: EInvoicePrintLayoutProps) {
             </div>
             <div className="header-right">
               {data.signedQRCodeBase64 && (
-                <img
+                <Image
                   src={data.signedQRCodeBase64}
                   alt="QR Code"
                   className="header-qrcode"
+                  width={100}
+                  height={100}
+                  unoptimized
                 />
               )}
             </div>
@@ -348,7 +351,7 @@ export function EInvoicePrintLayout({ data }: EInvoicePrintLayoutProps) {
                   <table className="einvoice-summary-table">
                     <tbody>
                       <tr>
-                        <td className="summary-label">Tax'ble Amt</td>
+                        <td className="summary-label">Tax&apos;ble Amt</td>
                         <td className="summary-label">CGST Amt</td>
                         <td className="summary-label">SGST Amt</td>
                         <td className="summary-label">IGST Amt</td>
@@ -436,10 +439,13 @@ export function EInvoicePrintLayout({ data }: EInvoicePrintLayoutProps) {
                 <td className="footer-cell">
                   {data.ewaybill && data.ewaybill.ewayBillNo ? (
                     <div className="ewaybill-barcode-container">
-                      <img
+                      <Image
                         src={`https://barcode.tec-it.com/barcode.ashx?data=${encodeURIComponent(data.ewaybill.ewayBillNo)}&code=Code128&dpi=96&dataseparator=&hidehrt=true`}
                         alt={`E-Waybill Barcode: ${data.ewaybill.ewayBillNo}`}
                         className="ewaybill-barcode"
+                        width={200}
+                        height={50}
+                        unoptimized
                       />
                       <div className="ewaybill-barcode-number">{data.ewaybill.ewayBillNo}</div>
                     </div>
