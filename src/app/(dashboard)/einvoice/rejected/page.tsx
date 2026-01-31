@@ -32,6 +32,8 @@ export default function RejectedIRNsPage() {
         {
           id: "1",
           invoiceId: "INV-2024-101",
+          invoiceNumber: "INV-2024-101",
+          invoiceDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
           irn: "rejected1a2b3c4d5e6f7g8h9i0j1k2l3m4n5",
           ackNo: "",
           ackDate: new Date().toISOString(),
@@ -42,6 +44,8 @@ export default function RejectedIRNsPage() {
         {
           id: "2",
           invoiceId: "INV-2024-102",
+          invoiceNumber: "INV-2024-102",
+          invoiceDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
           irn: "rejected2b3c4d5e6f7g8h9i0j1k2l3m4n5o6",
           ackNo: "",
           ackDate: new Date().toISOString(),

@@ -125,9 +125,27 @@ export default function GSTNLookupPage() {
       return;
     }
 
+    if (!authToken) {
+      toast({
+        title: "Authentication Required",
+        description: "Please wait for authentication to complete",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSyncing(true);
     try {
-      const details = await einvoiceService.syncGSTINFromCP(gstin);
+      const config = {
+        email: GST_API_CONFIG.SANDBOX.email,
+        username: GST_API_CONFIG.SANDBOX.username,
+        ip_address: GST_API_CONFIG.SANDBOX.ip_address,
+        client_id: GST_API_CONFIG.SANDBOX.client_id,
+        client_secret: GST_API_CONFIG.SANDBOX.client_secret,
+        gstin: GST_API_CONFIG.SANDBOX.gstin,
+        authToken: authToken,
+      };
+      const details = await einvoiceService.syncGSTINFromCP(gstin, config);
       setGstnDetails(details);
       toast({
         title: "Success",

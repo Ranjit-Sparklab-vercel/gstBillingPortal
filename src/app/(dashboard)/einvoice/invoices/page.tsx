@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,6 +30,7 @@ import {
 import { EInvoice } from "@/types";
 import { ROUTES } from "@/constants";
 import { formatDate } from "@/lib/utils";
+import { format } from "date-fns";
 import { einvoiceStorage } from "@/lib/einvoice-storage";
 import { einvoiceService } from "@/services/gst/einvoice.service";
 import { gstAuthService } from "@/services/gst/auth.service";
@@ -646,10 +648,13 @@ export default function EInvoicesPage() {
           {selectedEInvoice && (
             <div className="flex flex-col items-center space-y-4">
               <div className="p-4 bg-white rounded-lg border">
-                <img
+                <Image
                   src={selectedEInvoice.qrCode}
                   alt="QR Code"
+                  width={256}
+                  height={256}
                   className="w-64 h-64"
+                  unoptimized
                 />
               </div>
               <div className="text-center space-y-2">
