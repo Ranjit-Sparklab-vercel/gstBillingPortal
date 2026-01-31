@@ -21,6 +21,11 @@ import {
   Search,
   AlertCircle,
   X,
+  XCircle,
+  Clock,
+  Inbox,
+  Printer,
+  Link as LinkIcon,
 } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
@@ -109,25 +114,84 @@ const gstMenuItems: MenuItem[] = [
   },
 ];
 
-// E-Way Bill Menu Items
+// E-Way Bill Menu Items - Organized by priority and user workflow (as per Government Portal)
 const ewayMenuItems: MenuItem[] = [
+  // 1. Overview - Dashboard/Home
   {
     title: "Overview",
     href: ROUTES.EWAY.ROOT,
     icon: LayoutDashboard,
     exact: true, // Only active on exact /eway
   },
+  // 2. Primary Actions - Generate E-Way Bill (Most Common)
+  {
+    title: "Generate E-Way Bill",
+    href: ROUTES.EWAY.CREATE,
+    icon: Plus,
+    exact: true, // Only active on exact /eway/bills/create
+  },
+  // 3. View/Manage - List all E-Way Bills
   {
     title: "E-Way Bills",
     href: ROUTES.EWAY.BILLS,
     icon: FileText,
     exact: true, // Only active on exact /eway/bills
   },
+  // 4. Common Operations - Update Vehicle Details (Part-B) - Most frequent update
   {
-    title: "Generate Bill",
-    href: ROUTES.EWAY.CREATE,
-    icon: Plus,
-    exact: true, // Only active on exact /eway/bills/create
+    title: "Update Vehicle Details",
+    href: ROUTES.EWAY.UPDATE_VEHICLE,
+    icon: Truck,
+    exact: true, // Only active on exact /eway/update-vehicle
+  },
+  // 5. Common Operations - Print/Download E-Way Bill
+  {
+    title: "Print E-Way Bill",
+    href: ROUTES.EWAY.PRINT,
+    icon: Printer,
+    exact: true, // Only active on exact /eway/print
+  },
+  // 6. Management Actions - Cancel E-Way Bill
+  {
+    title: "Cancel E-Way Bill",
+    href: ROUTES.EWAY.CANCEL,
+    icon: XCircle,
+    exact: true, // Only active on exact /eway/cancel
+  },
+  // 7. Management Actions - Extend Validity
+  {
+    title: "Extend Validity",
+    href: ROUTES.EWAY.EXTEND_VALIDITY,
+    icon: Clock,
+    exact: true, // Only active on exact /eway/extend-validity
+  },
+  // 8. Management Actions - Change Transporter
+  {
+    title: "Change Transporter",
+    href: ROUTES.EWAY.CHANGE_TRANSPORTER,
+    icon: Users,
+    exact: true, // Only active on exact /eway/change-transporter
+  },
+  // 9. Advanced Features - Consolidated E-Way Bill
+  {
+    title: "Consolidated E-Way Bill",
+    href: ROUTES.EWAY.CONSOLIDATED,
+    icon: FileText,
+    exact: true, // Only active on exact /eway/consolidated
+  },
+  // 10. Advanced Features - Received E-Way Bills
+  {
+    title: "Received E-Way Bills",
+    href: ROUTES.EWAY.RECEIVED,
+    icon: Inbox,
+    exact: true, // Only active on exact /eway/received
+  },
+  // 11. Utilities - View IRN Linked EWB
+  {
+    title: "View IRN Linked EWB",
+    href: ROUTES.EWAY.VIEW_IRN,
+    icon: LinkIcon,
+    exact: true, // Only active on exact /eway/view-irn
   },
 ];
 

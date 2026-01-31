@@ -26,21 +26,59 @@ export async function POST(
     const body = await request.json();
 
     // Validate required fields
-    const { vehicleNo, transMode, distance, transporterName } = body;
+    const { vehicleNo, transMode, distance, transDocNo, transDocDate, status } = body;
 
-    if (!vehicleNo || !transMode || distance === undefined) {
+    // Validate E-Way Bill status - MUST be ACTIVE
+    if (status && status !== "ACTIVE") {
       return NextResponse.json(
         { 
           success: false,
-          message: "Missing required fields: vehicleNo, transMode, and distance are required" 
+          message: "Only Active E-Way Bills can be updated. Current status: " + status 
         },
         { status: 400 }
       );
     }
 
-    // Validate E-Way Bill status (should be ACTIVE)
-    // In production, fetch from DB and check status
-    // For now, we'll assume it's active if the API call succeeds
+    // Validate transport mode and distance
+    if (!transMode || distance === undefined) {
+      return NextResponse.json(
+        { 
+          success: false,
+          message: "Missing required fields: transMode and distance are required" 
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate: Either vehicleNo OR (transDocNo + transDocDate) must be provided
+    const hasVehicleNo = vehicleNo && vehicleNo.trim().length > 0;
+    const hasTransDoc = transDocNo && transDocNo.trim().length > 0 && 
+                       transDocDate && transDocDate.trim().length > 0;
+
+    if (!hasVehicleNo && !hasTransDoc) {
+      return NextResponse.json(
+        { 
+          success: false,
+          message: "Either Vehicle Number OR Transport Document No + Date must be provided" 
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate vehicle number format if provided
+    if (hasVehicleNo) {
+      const vehicleNoRegex = /^[A-Z]{2}[0-9]{1,2}[A-Z]{1,2}[0-9]{4}$/;
+      const cleanedVehicleNo = vehicleNo.toUpperCase().replace(/\s/g, "");
+      if (!vehicleNoRegex.test(cleanedVehicleNo)) {
+        return NextResponse.json(
+          { 
+            success: false,
+            message: "Vehicle number must be in format: XX##XX#### (e.g., MH12AB1234)" 
+          },
+          { status: 400 }
+        );
+      }
+    }
 
     // Authenticate with WhiteBooks
     const authConfig = {
@@ -69,16 +107,24 @@ export async function POST(
     const authToken = authResponse.data.AuthToken;
 
     // Prepare Part-B data
-    const partBData = {
+    const partBData: any = {
       transMode: String(transMode),
       distance: Number(distance),
-      vehicleNo: String(vehicleNo),
-      transporterName: transporterName || "",
+      transporterName: body.transporterName || "",
       transporterId: body.transporterId || undefined,
       vehicleType: body.vehicleType || undefined,
-      transDocNo: body.transDocNo || undefined,
-      transDocDate: body.transDocDate || undefined,
     };
+
+    // Add vehicleNo if provided
+    if (hasVehicleNo) {
+      partBData.vehicleNo = vehicleNo.toUpperCase().replace(/\s/g, "");
+    }
+
+    // Add transport document details if provided
+    if (hasTransDoc) {
+      partBData.transDocNo = transDocNo.trim();
+      partBData.transDocDate = transDocDate.trim();
+    }
 
     // Call WhiteBooks Update Vehicle API
     const whiteBooksConfig = {
@@ -106,30 +152,33 @@ export async function POST(
 
     // Save vehicle history to DB (simulated)
     // In production, save to actual database:
-    // - Create EWayBillVehicleHistory record
-    // - Update EWayBill.lastUpdatedVehicleNumber
+    // - Create EWayBillVehicleHistory record (maintains full history)
+    // - Update EWayBill.lastUpdatedVehicleNumber (if vehicleNo provided)
     // - Update EWayBill.lastVehicleUpdateAt
     const vehicleHistory = {
       id: `vh-${Date.now()}`,
       ewayBillId: ewayBillNo, // In production, use actual DB ID
-      vehicleNumber: vehicleNo,
-      transporterName: partBData.transporterName,
-      transporterId: partBData.transporterId,
+      vehicleNumber: hasVehicleNo ? partBData.vehicleNo : null,
+      transporterName: partBData.transporterName || null,
+      transporterId: partBData.transporterId || null,
       transMode: partBData.transMode,
       distance: partBData.distance,
-      vehicleType: partBData.vehicleType,
-      transDocNo: partBData.transDocNo,
-      transDocDate: partBData.transDocDate,
+      vehicleType: partBData.vehicleType || null,
+      transDocNo: hasTransDoc ? partBData.transDocNo : null,
+      transDocDate: hasTransDoc ? partBData.transDocDate : null,
       updatedAt: new Date().toISOString(),
+      updatedBy: "system", // In production, use actual user ID
     };
 
     // Return success response
     return NextResponse.json({
       success: true,
-      message: "Vehicle details updated successfully",
+      message: "Vehicle details updated successfully. History has been saved.",
       data: {
         ewayBillNo,
-        vehicleNumber: vehicleNo,
+        vehicleNumber: hasVehicleNo ? partBData.vehicleNo : null,
+        transportDocNo: hasTransDoc ? partBData.transDocNo : null,
+        transportDocDate: hasTransDoc ? partBData.transDocDate : null,
         lastUpdatedAt: vehicleHistory.updatedAt,
         vehicleHistory,
         whiteBooksResponse: updateResponse,

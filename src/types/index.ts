@@ -75,14 +75,14 @@ export interface InvoiceItem {
 export interface EWayBillVehicleHistory {
   id: string;
   ewayBillId: string;
-  vehicleNumber: string;
-  transporterName?: string;
-  transporterId?: string;
+  vehicleNumber?: string | null; // Optional: Can be null if only Transport Document is provided
+  transporterName?: string | null;
+  transporterId?: string | null;
   transMode: string;
   distance: number;
-  vehicleType?: string;
-  transDocNo?: string;
-  transDocDate?: string;
+  vehicleType?: string | null;
+  transDocNo?: string | null; // Required if vehicleNumber is not provided
+  transDocDate?: string | null; // Required if vehicleNumber is not provided
   updatedAt: string;
   updatedBy?: string;
 }
@@ -92,16 +92,28 @@ export interface EWayBill {
   ewayBillNumber: string;
   invoiceId: string;
   transporterName: string;
+  transporterId?: string;
   vehicleNumber: string;
   fromPlace: string;
   toPlace: string;
   validFrom: string;
   validUntil: string;
-  status: "ACTIVE" | "EXPIRED" | "CANCELLED";
+  status: "ACTIVE" | "EXPIRED" | "CANCELLED" | "RECEIVED" | "REJECTED" | "ACCEPTED";
   createdAt: string;
   lastUpdatedVehicleNumber?: string;
   lastVehicleUpdateAt?: string;
   vehicleHistory?: EWayBillVehicleHistory[];
+  // Cancellation details
+  cancelReasonCode?: string;
+  cancelRemarks?: string;
+  cancelledAt?: string;
+  cancelledBy?: string;
+  // Extended validity details
+  extendedValidUntil?: string;
+  extendReason?: string;
+  currentLocation?: string;
+  extendedAt?: string;
+  extendedBy?: string;
 }
 
 export interface EInvoice {

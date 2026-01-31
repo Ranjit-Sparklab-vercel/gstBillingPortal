@@ -24,22 +24,17 @@ import "react-datepicker/dist/react-datepicker.css";
 
 /**
  * Update Vehicle Details Dialog Component
- * Simple form like Govt portal for updating Part-B (Vehicle Details)
+ * Government-style simple form for updating Part-B (Vehicle Details)
  * 
  * Rules:
- * - Vehicle update allowed multiple times
- * - Mandatory before movement
- * - Only Active E-Way Bills allowed
+ * - Allowed ONLY if E-Way Bill status = Active
+ * - Allow update using: Vehicle Number OR Transport Document No + Date
+ * - Multiple updates allowed
+ * - Maintain full vehicle update history
  */
 
 const updateVehicleSchema = z.object({
-  vehicleNo: z
-    .string()
-    .min(1, "Vehicle number is required")
-    .regex(
-      /^[A-Z]{2}[0-9]{1,2}[A-Z]{1,2}[0-9]{4}$/,
-      "Vehicle number must be in format: XX##XX#### (e.g., MH12AB1234)"
-    ),
+  vehicleNo: z.string().optional(),
   transMode: z.string().min(1, "Transport mode is required"),
   distance: z
     .string()
@@ -50,7 +45,32 @@ const updateVehicleSchema = z.object({
   vehicleType: z.string().optional(),
   transDocNo: z.string().optional(),
   transDocDate: z.string().optional(),
-});
+}).refine(
+  (data) => {
+    // Either vehicleNo OR (transDocNo + transDocDate) must be provided
+    const hasVehicleNo = data.vehicleNo && data.vehicleNo.trim().length > 0;
+    const hasTransDoc = data.transDocNo && data.transDocNo.trim().length > 0 && 
+                       data.transDocDate && data.transDocDate.trim().length > 0;
+    return hasVehicleNo || hasTransDoc;
+  },
+  {
+    message: "Either Vehicle Number OR Transport Document No + Date must be provided",
+    path: ["vehicleNo"],
+  }
+).refine(
+  (data) => {
+    // If vehicleNo is provided, validate format
+    if (data.vehicleNo && data.vehicleNo.trim().length > 0) {
+      const vehicleNoRegex = /^[A-Z]{2}[0-9]{1,2}[A-Z]{1,2}[0-9]{4}$/;
+      return vehicleNoRegex.test(data.vehicleNo.toUpperCase().replace(/\s/g, ""));
+    }
+    return true;
+  },
+  {
+    message: "Vehicle number must be in format: XX##XX#### (e.g., MH12AB1234)",
+    path: ["vehicleNo"],
+  }
+);
 
 type UpdateVehicleFormData = z.infer<typeof updateVehicleSchema>;
 
@@ -99,6 +119,9 @@ export function UpdateVehicleDialog({
     },
   });
 
+  const vehicleNo = watch("vehicleNo");
+  const transDocNo = watch("transDocNo");
+
   // Reset form when dialog opens/closes or ewayBill changes
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen) {
@@ -127,16 +150,26 @@ export function UpdateVehicleDialog({
         ? format(transDocDate, "dd/MM/yyyy")
         : undefined;
 
-      const payload = {
-        vehicleNo: data.vehicleNo.toUpperCase().replace(/\s/g, ""),
+      // Build payload based on OR condition
+      const payload: any = {
         transMode: data.transMode,
         distance: parseFloat(data.distance),
+        status: ewayBill.status, // Pass status for validation
         transporterName: data.transporterName || undefined,
         transporterId: data.transporterId || undefined,
         vehicleType: data.vehicleType || undefined,
-        transDocNo: data.transDocNo || undefined,
-        transDocDate: formattedTransDocDate,
       };
+
+      // Add vehicleNo if provided
+      if (data.vehicleNo && data.vehicleNo.trim().length > 0) {
+        payload.vehicleNo = data.vehicleNo.toUpperCase().replace(/\s/g, "");
+      }
+
+      // Add transport document details if provided
+      if (data.transDocNo && data.transDocNo.trim().length > 0 && formattedTransDocDate) {
+        payload.transDocNo = data.transDocNo.trim();
+        payload.transDocDate = formattedTransDocDate;
+      }
 
       // Call API route
       const response = await fetch(
@@ -180,37 +213,60 @@ export function UpdateVehicleDialog({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Update Vehicle Details (Part-B)</DialogTitle>
-          <DialogDescription>
-            Update transport details for E-Way Bill: {ewayBill.ewayBillNumber}
+          <DialogDescription className="space-y-2">
+            <div>
+              E-Way Bill: <strong>{ewayBill.ewayBillNumber}</strong>
+            </div>
+            {ewayBill.status !== "ACTIVE" && (
+              <div className="text-destructive font-medium">
+                ⚠️ Update not allowed: Only Active E-Way Bills can be updated. Current status: {ewayBill.status}
+              </div>
+            )}
             {ewayBill.lastUpdatedVehicleNumber && (
-              <span className="block mt-1 text-xs text-muted-foreground">
-                Last updated vehicle: {ewayBill.lastUpdatedVehicleNumber}
+              <div className="text-xs text-muted-foreground border-t pt-2 mt-2">
+                <div className="font-medium">Last Updated Vehicle Details:</div>
+                <div>Vehicle Number: {ewayBill.lastUpdatedVehicleNumber}</div>
                 {ewayBill.lastVehicleUpdateAt && (
-                  <span className="ml-2">
-                    ({format(new Date(ewayBill.lastVehicleUpdateAt), "dd/MM/yyyy HH:mm")})
-                  </span>
+                  <div>Updated At: {format(new Date(ewayBill.lastVehicleUpdateAt), "dd/MM/yyyy HH:mm")}</div>
                 )}
-              </span>
+              </div>
             )}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* Government-style Info Box */}
+          <div className="border border-border bg-muted/50 p-3 rounded-md text-sm">
+            <p className="font-medium mb-1">Update Options:</p>
+            <p className="text-muted-foreground">
+              Provide <strong>Vehicle Number</strong> OR <strong>Transport Document No + Date</strong>
+            </p>
+          </div>
+
           <div className="grid gap-4 md:grid-cols-2">
-            {/* Vehicle Number - Required */}
+            {/* Vehicle Number - Optional (OR condition) */}
             <div className="space-y-2">
               <Label htmlFor="vehicleNo">
-                Vehicle Number <span className="text-red-500">*</span>
+                Vehicle Number <span className="text-muted-foreground text-xs">(Option 1)</span>
               </Label>
               <Input
                 id="vehicleNo"
                 placeholder="e.g., MH12AB1234"
                 {...register("vehicleNo")}
                 className={errors.vehicleNo ? "border-destructive" : ""}
+                onChange={(e) => {
+                  // Auto-uppercase and remove spaces
+                  const value = e.target.value.toUpperCase().replace(/\s/g, "");
+                  e.target.value = value;
+                  register("vehicleNo").onChange(e);
+                }}
               />
               {errors.vehicleNo && (
                 <p className="text-sm text-destructive">{errors.vehicleNo.message}</p>
               )}
+              <p className="text-xs text-muted-foreground">
+                Format: XX##XX#### (e.g., MH12AB1234)
+              </p>
             </div>
 
             {/* Transport Mode - Required */}
@@ -291,19 +347,27 @@ export function UpdateVehicleDialog({
               />
             </div>
 
-            {/* Transport Document Number - Optional */}
+            {/* Transport Document Number - Optional (OR condition) */}
             <div className="space-y-2">
-              <Label htmlFor="transDocNo">Transport Document No (Optional)</Label>
+              <Label htmlFor="transDocNo">
+                Transport Document No <span className="text-muted-foreground text-xs">(Option 2)</span>
+              </Label>
               <Input
                 id="transDocNo"
                 placeholder="Enter document number"
                 {...register("transDocNo")}
+                className={errors.transDocNo ? "border-destructive" : ""}
               />
+              {errors.transDocNo && (
+                <p className="text-sm text-destructive">{errors.transDocNo.message}</p>
+              )}
             </div>
 
-            {/* Transport Document Date - Optional */}
+            {/* Transport Document Date - Required if transDocNo provided */}
             <div className="space-y-2">
-              <Label htmlFor="transDocDate">Transport Document Date (Optional)</Label>
+              <Label htmlFor="transDocDate">
+                Transport Document Date <span className="text-muted-foreground text-xs">(Required if Document No provided)</span>
+              </Label>
               <DatePicker
                 selected={transDocDate}
                 onChange={(date) => {
@@ -316,6 +380,9 @@ export function UpdateVehicleDialog({
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 wrapperClassName="w-full"
               />
+              {errors.transDocDate && (
+                <p className="text-sm text-destructive">{errors.transDocDate.message}</p>
+              )}
             </div>
           </div>
 
@@ -328,7 +395,11 @@ export function UpdateVehicleDialog({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button 
+              type="submit" 
+              disabled={isLoading || ewayBill.status !== "ACTIVE"}
+              title={ewayBill.status !== "ACTIVE" ? "Only Active E-Way Bills can be updated" : ""}
+            >
               {isLoading ? (
                 <>
                   <Loader size="sm" className="mr-2" />

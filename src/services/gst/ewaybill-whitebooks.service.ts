@@ -252,6 +252,320 @@ class WhiteBooksEWayBillService {
   }
 
   /**
+   * Change Transporter for E-Way Bill
+   * API Endpoint: POST /ewaybill/change-transporter
+   * 
+   * Rules:
+   * - Only Active E-Way Bills allowed
+   * - New Transporter ID mandatory
+   * - Old transporter access revoked
+   */
+  async changeTransporter(
+    ewayBillNo: string,
+    newTransporterId: string,
+    newTransporterName?: string,
+    config: WhiteBooksEWayBillConfig
+  ): Promise<WhiteBooksEWayBillResponse> {
+    try {
+      const headers = {
+        email: config.email,
+        username: config.username,
+        password: config.password,
+        ip_address: config.ip_address || "192.168.1.6",
+        client_id: config.client_id,
+        client_secret: config.client_secret,
+        gstin: config.gstin,
+        "auth-token": config.authToken,
+        "Content-Type": "application/json",
+      };
+
+      const payload = {
+        ewayBillNo,
+        newTransporterId,
+        newTransporterName: newTransporterName || "",
+      };
+
+      const response = await axios.post(
+        `${this.baseUrl}/ewaybill/change-transporter?email=${config.email}`,
+        payload,
+        {
+          headers,
+          timeout: 30000,
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      console.error("Change Transporter Error:", error);
+      const errorMessage = error.response?.data?.status_desc || 
+                          error.response?.data?.message || 
+                          error.message || 
+                          "Failed to change transporter";
+      throw new Error(errorMessage);
+    }
+  }
+
+  /**
+   * Cancel E-Way Bill
+   * API Endpoint: POST /ewaybill/cancel
+   * 
+   * Rules:
+   * - Cancellation allowed only within 24 hours of generation
+   * - Goods movement not started
+   * - Cancel reason mandatory
+   */
+  async cancelEWayBill(
+    ewayBillNo: string,
+    cancelReasonCode: string,
+    cancelRemarks: string,
+    config: WhiteBooksEWayBillConfig
+  ): Promise<WhiteBooksEWayBillResponse> {
+    try {
+      const headers = {
+        email: config.email,
+        username: config.username,
+        password: config.password,
+        ip_address: config.ip_address || "192.168.1.6",
+        client_id: config.client_id,
+        client_secret: config.client_secret,
+        gstin: config.gstin,
+        "auth-token": config.authToken,
+        "Content-Type": "application/json",
+      };
+
+      const payload = {
+        ewayBillNo,
+        cancelReasonCode,
+        cancelRemarks,
+      };
+
+      const response = await axios.post(
+        `${this.baseUrl}/ewaybill/cancel?email=${config.email}`,
+        payload,
+        {
+          headers,
+          timeout: 30000,
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      console.error("Cancel E-Way Bill Error:", error);
+      const errorMessage = error.response?.data?.status_desc ||
+                          error.response?.data?.message ||
+                          error.message ||
+                          "Failed to cancel E-Way Bill";
+      throw new Error(errorMessage);
+    }
+  }
+
+  /**
+   * Extend Validity of E-Way Bill
+   * API Endpoint: POST /ewaybill/extend-validity
+   * 
+   * Rules:
+   * - Allowed ONLY for Active E-Way Bills
+   * - Reason mandatory
+   * - Current location mandatory
+   * - Valid only within govt-allowed window
+   */
+  async extendValidity(
+    ewayBillNo: string,
+    extendReason: string,
+    currentLocation: string,
+    newValidUntil: string, // Format: "dd/MM/yyyy HH:mm"
+    config: WhiteBooksEWayBillConfig
+  ): Promise<WhiteBooksEWayBillResponse> {
+    try {
+      const headers = {
+        email: config.email,
+        username: config.username,
+        password: config.password,
+        ip_address: config.ip_address || "192.168.1.6",
+        client_id: config.client_id,
+        client_secret: config.client_secret,
+        gstin: config.gstin,
+        "auth-token": config.authToken,
+        "Content-Type": "application/json",
+      };
+
+      const payload = {
+        ewayBillNo,
+        extendReason,
+        currentLocation,
+        newValidUntil,
+      };
+
+      const response = await axios.post(
+        `${this.baseUrl}/ewaybill/extend-validity?email=${config.email}`,
+        payload,
+        {
+          headers,
+          timeout: 30000,
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      console.error("Extend Validity Error:", error);
+      const errorMessage = error.response?.data?.status_desc ||
+                          error.response?.data?.message ||
+                          error.message ||
+                          "Failed to extend E-Way Bill validity";
+      throw new Error(errorMessage);
+    }
+  }
+
+  /**
+   * Reject E-Way Bill
+   * API Endpoint: POST /ewaybill/reject
+   * 
+   * Rejects a received E-Way Bill
+   * Rules:
+   * - Only received E-Way Bills can be rejected
+   * - Rejection must be within 72 hours of receipt
+   */
+  async rejectEWayBill(
+    ewayBillNo: string,
+    rejectReason: string,
+    config: WhiteBooksEWayBillConfig
+  ): Promise<WhiteBooksEWayBillResponse> {
+    try {
+      const headers = {
+        email: config.email,
+        username: config.username,
+        password: config.password,
+        ip_address: config.ip_address || "192.168.1.6",
+        client_id: config.client_id,
+        client_secret: config.client_secret,
+        gstin: config.gstin,
+        "auth-token": config.authToken,
+        "Content-Type": "application/json",
+      };
+
+      const payload = {
+        ewayBillNo,
+        rejectReason,
+      };
+
+      const response = await axios.post(
+        `${this.baseUrl}/ewaybill/reject?email=${config.email}`,
+        payload,
+        {
+          headers,
+          timeout: 30000,
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      console.error("Reject E-Way Bill Error:", error);
+      const errorMessage = error.response?.data?.status_desc ||
+                          error.response?.data?.message ||
+                          error.message ||
+                          "Failed to reject E-Way Bill";
+      throw new Error(errorMessage);
+    }
+  }
+
+  /**
+   * Accept E-Way Bill
+   * API Endpoint: POST /ewaybill/accept
+   * 
+   * Accepts a received E-Way Bill
+   * Rules:
+   * - Only received E-Way Bills can be accepted
+   * - Acceptance must be within 72 hours of receipt
+   */
+  async acceptEWayBill(
+    ewayBillNo: string,
+    config: WhiteBooksEWayBillConfig
+  ): Promise<WhiteBooksEWayBillResponse> {
+    try {
+      const headers = {
+        email: config.email,
+        username: config.username,
+        password: config.password,
+        ip_address: config.ip_address || "192.168.1.6",
+        client_id: config.client_id,
+        client_secret: config.client_secret,
+        gstin: config.gstin,
+        "auth-token": config.authToken,
+        "Content-Type": "application/json",
+      };
+
+      const payload = {
+        ewayBillNo,
+      };
+
+      const response = await axios.post(
+        `${this.baseUrl}/ewaybill/accept?email=${config.email}`,
+        payload,
+        {
+          headers,
+          timeout: 30000,
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      console.error("Accept E-Way Bill Error:", error);
+      const errorMessage = error.response?.data?.status_desc ||
+                          error.response?.data?.message ||
+                          error.message ||
+                          "Failed to accept E-Way Bill";
+      throw new Error(errorMessage);
+    }
+  }
+
+  /**
+   * Generate Consolidated E-Way Bill
+   * API Endpoint: POST /ewaybill/consolidated
+   * 
+   * Consolidates multiple E-Way Bills into a single Consolidated E-Way Bill
+   */
+  async generateConsolidatedEWayBill(
+    ewayBillNumbers: string[],
+    config: WhiteBooksEWayBillConfig
+  ): Promise<WhiteBooksEWayBillResponse> {
+    try {
+      const headers = {
+        email: config.email,
+        username: config.username,
+        password: config.password,
+        ip_address: config.ip_address || "192.168.1.6",
+        client_id: config.client_id,
+        client_secret: config.client_secret,
+        gstin: config.gstin,
+        "auth-token": config.authToken,
+        "Content-Type": "application/json",
+      };
+
+      const payload = {
+        ewayBillNumbers,
+      };
+
+      const response = await axios.post(
+        `${this.baseUrl}/ewaybill/consolidated?email=${config.email}`,
+        payload,
+        {
+          headers,
+          timeout: 30000,
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      console.error("Generate Consolidated E-Way Bill Error:", error);
+      const errorMessage = error.response?.data?.status_desc ||
+                          error.response?.data?.message ||
+                          error.message ||
+                          "Failed to generate Consolidated E-Way Bill";
+      throw new Error(errorMessage);
+    }
+  }
+
+  /**
    * Validate payload as per WhiteBooks specification
    * Implements validation rules from "Specification And Validations" sheet
    */
