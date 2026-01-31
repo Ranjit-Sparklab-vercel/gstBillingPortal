@@ -10,6 +10,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -373,10 +374,13 @@ export default function GetIRNByDocDetailsPage() {
                   <div>
                     <p className="text-sm text-muted-foreground mb-2">QR Code</p>
                     <div className="flex items-center gap-4">
-                      <img
+                      <Image
                         src={irnData.data.QRCode}
                         alt="QR Code"
+                        width={128}
+                        height={128}
                         className="w-32 h-32 border rounded"
+                        unoptimized
                       />
                       <div className="flex-1">
                         <p className="text-xs text-muted-foreground break-all">

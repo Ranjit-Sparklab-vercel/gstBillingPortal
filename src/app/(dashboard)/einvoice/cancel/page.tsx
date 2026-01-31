@@ -356,7 +356,7 @@ export default function CancelEInvoicePage() {
             <li className="flex items-start gap-2">
               <XCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
               <span>
-                <strong>After Cancellation:</strong> Download and Print options will be disabled. IRN status will be marked as "Cancelled".
+                <strong>After Cancellation:</strong> Download and Print options will be disabled. IRN status will be marked as &quot;Cancelled&quot;.
               </span>
             </li>
           </ul>

@@ -486,7 +486,7 @@ export default function GetEInvoicePage() {
                 <>
                   <AlertCircle className="h-4 w-4 text-orange-500" />
                   <span className="text-muted-foreground">
-                    Loaded from local storage. Click "Refresh from Govt" to get latest data.
+                    Loaded from local storage. Click &quot;Refresh from Govt&quot; to get latest data.
                   </span>
                   <Button
                     variant="outline"
@@ -726,7 +726,7 @@ export default function GetEInvoicePage() {
                     <td colSpan={10} className="border border-gray-400 px-4 py-2">
                       <div className="grid grid-cols-5 gap-4 text-sm">
                         <div>
-                          <span className="font-semibold">Tax'ble Amt:</span><br />
+                          <span className="font-semibold">Tax&apos;ble Amt:</span><br />
                           <span className="text-base">₹{preparePrintData()!.summary.taxableAmt.toFixed(2)}</span>
                         </div>
                         {preparePrintData()!.summary.cgstAmt > 0 && (

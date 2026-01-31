@@ -58,7 +58,7 @@ export default function ForgotPasswordPage() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Check your email</CardTitle>
           <CardDescription>
-            We've sent a password reset link to your email address
+            We&apos;ve sent a password reset link to your email address
           </CardDescription>
         </CardHeader>
         <CardFooter>
@@ -75,7 +75,7 @@ export default function ForgotPasswordPage() {
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold">Forgot password</CardTitle>
         <CardDescription>
-          Enter your email address and we'll send you a reset link
+          Enter your email address and we&apos;ll send you a reset link
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit(onSubmit)}>
