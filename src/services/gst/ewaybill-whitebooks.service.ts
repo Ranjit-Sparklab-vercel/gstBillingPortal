@@ -263,8 +263,8 @@ class WhiteBooksEWayBillService {
   async changeTransporter(
     ewayBillNo: string,
     newTransporterId: string,
-    newTransporterName?: string,
-    config: WhiteBooksEWayBillConfig
+    config: WhiteBooksEWayBillConfig,
+    newTransporterName?: string
   ): Promise<WhiteBooksEWayBillResponse> {
     try {
       const headers = {
@@ -307,7 +307,19 @@ class WhiteBooksEWayBillService {
 
   /**
    * Cancel E-Way Bill
-   * API Endpoint: POST /ewaybill/cancel
+   * API Endpoint: POST /ewaybillapi/v1.03/ewayapi/canewb
+   * 
+   * Parameters (as per WhiteBooks API documentation):
+   * - email (query) - User Email
+   * - ip_address (header) - IP Address
+   * - client_id (header) - Client ID
+   * - client_secret (header) - Client Secret
+   * - gstin (header) - GSTIN number
+   * 
+   * Request Body:
+   * - ewbNo: E-Way Bill Number (number)
+   * - cancelRsnCode: Cancel Reason Code (number: 1-5)
+   * - cancelRmrk: Cancel Remarks (string)
    * 
    * Rules:
    * - Cancellation allowed only within 24 hours of generation
@@ -321,26 +333,29 @@ class WhiteBooksEWayBillService {
     config: WhiteBooksEWayBillConfig
   ): Promise<WhiteBooksEWayBillResponse> {
     try {
+      // Build headers as per WhiteBooks API specification
+      // Note: Only ip_address, client_id, client_secret, gstin go in headers
+      // email is passed as query parameter
       const headers = {
-        email: config.email,
-        username: config.username,
-        password: config.password,
         ip_address: config.ip_address || "192.168.1.6",
         client_id: config.client_id,
         client_secret: config.client_secret,
         gstin: config.gstin,
-        "auth-token": config.authToken,
         "Content-Type": "application/json",
       };
 
+      // Request body must use exact field names as per API documentation:
+      // ewbNo (number), cancelRsnCode (number), cancelRmrk (string)
       const payload = {
-        ewayBillNo,
-        cancelReasonCode,
-        cancelRemarks,
+        ewbNo: parseInt(ewayBillNo.replace(/[^0-9]/g, ""), 10), // Extract numeric part only
+        cancelRsnCode: parseInt(cancelReasonCode, 10), // Convert to number
+        cancelRmrk: cancelRemarks.trim(),
       };
 
+      // API Endpoint: /ewaybillapi/v1.03/ewayapi/canewb
+      // email is passed as query parameter
       const response = await axios.post(
-        `${this.baseUrl}/ewaybill/cancel?email=${config.email}`,
+        `${this.baseUrl}/ewaybillapi/v1.03/ewayapi/canewb?email=${encodeURIComponent(config.email)}`,
         payload,
         {
           headers,

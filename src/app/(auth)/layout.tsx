@@ -50,7 +50,7 @@ export default function AuthLayout({
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 font-bold text-2xl backdrop-blur-sm">
               G
             </div>
-            <span className="text-2xl font-bold">GST Portal</span>
+            <span className="text-2xl font-bold">GSTSahayak</span>
           </Link>
           
           <div className="space-y-6">

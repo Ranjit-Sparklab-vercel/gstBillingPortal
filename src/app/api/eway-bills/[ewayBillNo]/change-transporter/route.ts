@@ -103,8 +103,8 @@ export async function POST(
     const changeResponse = await whiteBooksEWayBillService.changeTransporter(
       ewayBillNo,
       newTransporterId.trim(),
-      newTransporterName?.trim() || undefined,
-      whiteBooksConfig
+      whiteBooksConfig,
+      newTransporterName?.trim() || undefined
     );
 
     // Check if change was successful

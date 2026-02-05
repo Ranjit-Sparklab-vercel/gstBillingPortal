@@ -38,6 +38,10 @@ import { Loader } from "@/components/common/loader";
 // Icons
 import { FileText, Truck, Building2, Search, Plus, Trash2, Download, Printer, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
 
+// Calculator Component
+import { Calculator as CalculatorComponent } from "@/components/common/calculator";
+import { CalculatorIcon } from "@/components/common/calculator-icon";
+
 // Date Picker
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -187,6 +191,9 @@ export default function CreateEWayBillPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [generatedEWayBill, setGeneratedEWayBill] = useState<any>(null);
+  
+  // Calculator State
+  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   
   // Authentication State
   const [authToken, setAuthToken] = useState<string>("");
@@ -1542,6 +1549,37 @@ export default function CreateEWayBillPage() {
           </CardContent>
         </Card>
       </form>
+
+      {/* Floating Calculator Button - Chatbot Style */}
+      <button
+        type="button"
+        onClick={() => setIsCalculatorOpen(true)}
+        className="fixed bottom-10 right-6 z-40 rounded-full shadow-md hover:shadow-lg transition-shadow flex items-center justify-center"
+        title="Open Calculator"
+        draggable="false"
+        onDragStart={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }}
+        onDrag={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }}
+        style={{
+          WebkitUserDrag: 'none',
+          userSelect: 'none',
+        }}
+      >
+        <CalculatorIcon className="h-14 w-14 rounded-full" />
+      </button>
+
+      {/* Calculator Dialog */}
+      <CalculatorComponent
+        open={isCalculatorOpen}
+        onOpenChange={setIsCalculatorOpen}
+      />
     </div>
   );
 }

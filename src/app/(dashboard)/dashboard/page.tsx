@@ -101,16 +101,21 @@ export default function DashboardPage() {
         {moduleCards.map((module) => {
           const Icon = module.icon;
           const subscription = subscriptions.find((sub) => sub.plan === module.plan);
-          const isActive = hasAccess(module.plan);
-          const planInfo = SUBSCRIPTION_PLANS[module.plan];
+          
+          // E-Way Bill and E-Invoice are always active
+          // GST Billing is coming soon
+          const isComingSoon = module.plan === SubscriptionPlan.GST_BILLING;
+          const isActive = isComingSoon ? false : true; // E-Way Bill and E-Invoice are active
 
           return (
             <Card
               key={module.plan}
-              className={`cursor-pointer transition-all hover:shadow-lg ${
-                !isActive ? "opacity-60" : ""
+              className={`transition-all ${
+                isComingSoon 
+                  ? "opacity-60 cursor-not-allowed" 
+                  : "cursor-pointer hover:shadow-lg"
               }`}
-              onClick={() => handleCardClick(module.route, isActive)}
+              onClick={() => !isComingSoon && handleCardClick(module.route, isActive)}
             >
               <CardHeader>
                 <div className={`flex h-12 w-12 items-center justify-center rounded-lg ${module.bgColor} mb-4`}>
@@ -123,11 +128,13 @@ export default function DashboardPage() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Status</span>
-                    <StatusBadge
-                      status={isActive ? SubscriptionStatus.ACTIVE : SubscriptionStatus.EXPIRED}
-                    />
+                    {isComingSoon ? (
+                      <span className="text-sm font-medium text-orange-600">Coming Soon</span>
+                    ) : (
+                      <StatusBadge status={SubscriptionStatus.ACTIVE} />
+                    )}
                   </div>
-                  {subscription && (
+                  {subscription && !isComingSoon && (
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-muted-foreground">Expires</span>
                       <div className="flex items-center gap-2 text-sm">
@@ -141,10 +148,10 @@ export default function DashboardPage() {
               <CardFooter>
                 <Button
                   className="w-full"
-                  variant={isActive ? "default" : "outline"}
-                  disabled={!isActive}
+                  variant={isComingSoon ? "outline" : "default"}
+                  disabled={isComingSoon}
                 >
-                  {isActive ? "Open Panel" : "Subscribe"}
+                  {isComingSoon ? "Coming Soon" : "Open Panel"}
                 </Button>
               </CardFooter>
             </Card>

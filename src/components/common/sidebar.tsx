@@ -9,8 +9,6 @@ import {
   Truck,
   Receipt,
   Settings,
-  LogOut,
-  User,
   Plus,
   Users,
   Package,
@@ -27,8 +25,6 @@ import {
   Printer,
   Link as LinkIcon,
 } from "lucide-react";
-import { useAuthStore } from "@/store/authStore";
-import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants";
 import { LucideIcon } from "lucide-react";
 
@@ -253,6 +249,20 @@ const einvoiceMenuItems: MenuItem[] = [
     icon: AlertCircle,
     exact: true, // Only active on exact /einvoice/rejected
   },
+  // 9. Customer Management - Add Customer
+  {
+    title: "Add Customer",
+    href: ROUTES.EINVOICE.ADD_CUSTOMER,
+    icon: Plus,
+    exact: true, // Only active on exact /einvoice/customers/add
+  },
+  // 10. Product Management - Add Product
+  {
+    title: "Add Product",
+    href: ROUTES.EINVOICE.ADD_PRODUCT,
+    icon: Package,
+    exact: true, // Only active on exact /einvoice/products/add
+  },
 ];
 
 // Helper function to check if a route is active
@@ -272,23 +282,10 @@ function isRouteActive(pathname: string, href: string, exact: boolean): boolean 
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { user, logout } = useAuthStore();
-  const router = useRouter();
-
-  // Mock user data when not logged in
-  const displayUser = user || {
-    name: "Demo User",
-    email: "demo@example.com",
-  };
-
-  const handleLogout = () => {
-    logout();
-    router.push(ROUTES.LOGIN);
-  };
 
   // Determine which menu to show based on current route
   let menuItems: MenuItem[] = mainMenuItems;
-  let moduleTitle = "GST Portal";
+  let moduleTitle = "GSTSahayak";
   let backToDashboard = false;
 
   if (pathname.startsWith(ROUTES.GST.ROOT + "/") || pathname === ROUTES.GST.ROOT) {
@@ -331,10 +328,28 @@ export function Sidebar() {
       )}
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 overflow-y-auto p-4">
+      <nav className="flex-1 space-y-1 overflow-y-auto p-4 sidebar-scrollbar">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = isRouteActive(pathname, item.href, item.exact ?? false);
+          // Temporarily disable GST Billing from main menu
+          const isDisabled = menuItems === mainMenuItems && item.href === ROUTES.GST.ROOT;
+          
+          if (isDisabled) {
+            return (
+              <div
+                key={item.href}
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium cursor-not-allowed opacity-50"
+                )}
+                title="Coming Soon"
+              >
+                <Icon className="h-5 w-5" />
+                {item.title}
+              </div>
+            );
+          }
+          
           return (
             <Link
               key={item.href}
@@ -353,24 +368,17 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* User Section */}
-      <div className="border-t p-4">
-        <div className="mb-2 flex items-center gap-3 px-3 py-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-            <User className="h-4 w-4 text-primary" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{displayUser.name}</p>
-            <p className="text-xs text-muted-foreground truncate">{displayUser.email}</p>
-          </div>
+      {/* Version Info - Sticky at bottom */}
+      <div className="sticky bottom-0 border-t bg-card p-4 mt-auto">
+        <div className="space-y-1">
+          <p className="text-xs font-medium text-muted-foreground">Version 2.1.1</p>
+          <p className="text-xs text-muted-foreground/70">
+            © 2025 GSTSahayak
+          </p>
+          <p className="text-xs text-muted-foreground/60">
+            All rights reserved
+          </p>
         </div>
-        <button
-          onClick={handleLogout}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-        >
-          <LogOut className="h-5 w-5" />
-          Logout
-        </button>
       </div>
     </div>
   );

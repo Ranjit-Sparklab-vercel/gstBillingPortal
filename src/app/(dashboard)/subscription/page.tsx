@@ -24,14 +24,30 @@ export default function SubscriptionPage() {
         setSubscriptions(response.data || []);
       } catch (error) {
         // Mock subscriptions for demo
+        // Set expiry date to 7 April (current year or next year if already passed)
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const april7 = new Date(currentYear, 3, 7); // Month is 0-indexed, so 3 = April
+        const expiryDate = april7 > now ? april7 : new Date(currentYear + 1, 3, 7);
+        
         const mockSubscriptions = [
           {
-            id: "1",
+            id: "2",
             userId: "1",
-            plan: SubscriptionPlan.GST_BILLING,
+            plan: SubscriptionPlan.EWAY_BILLING,
             status: SubscriptionStatus.ACTIVE,
             startDate: new Date().toISOString(),
-            expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+            expiryDate: expiryDate.toISOString(),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          },
+          {
+            id: "3",
+            userId: "1",
+            plan: SubscriptionPlan.EINVOICE,
+            status: SubscriptionStatus.ACTIVE,
+            startDate: new Date().toISOString(),
+            expiryDate: expiryDate.toISOString(),
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
           },
