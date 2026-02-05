@@ -18,6 +18,8 @@ import { GST_API_CONFIG } from "@/config/gstApi.config";
 import { einvoiceStorage } from "@/lib/einvoice-storage";
 import { Loader } from "@/components/common/loader";
 import { Search, Plus, Trash2, Calculator, Building2, Truck, FileText, ChevronDown, ChevronUp, Info, CheckCircle2 } from "lucide-react";
+import { Calculator as CalculatorComponent } from "@/components/common/calculator";
+import { CalculatorIcon } from "@/components/common/calculator-icon";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
@@ -144,6 +146,7 @@ export default function GenerateEInvoicePage() {
   const [authToken, setAuthToken] = useState<string>("");
   const [documentDate, setDocumentDate] = useState<Date | null>(new Date());
   const [activeTab, setActiveTab] = useState("transaction");
+  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   
   // State for optional sections visibility
   const [showOptionalSections, setShowOptionalSections] = useState({
@@ -2197,6 +2200,37 @@ export default function GenerateEInvoicePage() {
           </CardContent>
         </Card>
       </form>
+
+      {/* Floating Calculator Button - Chatbot Style */}
+      <button
+        type="button"
+        onClick={() => setIsCalculatorOpen(true)}
+        className="fixed bottom-10 right-6 z-40 rounded-full shadow-md hover:shadow-lg transition-shadow flex items-center justify-center"
+        title="Open Calculator"
+        draggable="false"
+        onDragStart={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }}
+        onDrag={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }}
+        style={{
+          WebkitUserDrag: 'none',
+          userSelect: 'none',
+        }}
+      >
+        <CalculatorIcon className="h-14 w-14 rounded-full" />
+      </button>
+
+      {/* Calculator Dialog */}
+      <CalculatorComponent
+        open={isCalculatorOpen}
+        onOpenChange={setIsCalculatorOpen}
+      />
     </div>
   );
 }

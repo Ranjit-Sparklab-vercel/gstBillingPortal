@@ -6,8 +6,11 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "GST Billing Portal - Enterprise SaaS",
+  title: "GSTSahayak - Enterprise SaaS",
   description: "Professional GST Billing, E-Way Bill, and E-Invoice Management System",
+  icons: {
+    icon: '/icon.svg',
+  },
 };
 
 export default function RootLayout({

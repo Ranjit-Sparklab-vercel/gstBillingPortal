@@ -43,8 +43,11 @@ export const ROUTES = {
     CANCEL: "/einvoice/cancel",
     GSTN_LOOKUP: "/einvoice/gstn-lookup",
     REJECTED: "/einvoice/rejected",
+    ADD_CUSTOMER: "/einvoice/customers/add",
+    ADD_PRODUCT: "/einvoice/products/add",
   },
   SUBSCRIPTION: "/subscription",
+  PROFILE: "/profile",
 } as const;
 
 export const SUBSCRIPTION_PLANS = {

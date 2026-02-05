@@ -18,7 +18,7 @@ import api from "@/lib/api";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().min(1, "Username or email is required"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
@@ -51,50 +51,29 @@ export default function LoginPage() {
     try {
       const response = await api.post("/auth/login", data);
       
-      const authData = response.data || {
-        user: {
-          id: "1",
-          email: data.email,
-          name: "Demo User",
-          role: UserRole.USER,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-        token: "mock-jwt-token-" + Date.now(),
-      };
-
-      setAuth(authData);
-      toast({
-        title: "Success",
-        description: "Logged in successfully",
-      });
-      
-      if (rememberMe) {
-        localStorage.setItem("rememberEmail", data.email);
+      if (response.data) {
+        setAuth(response.data);
+        toast({
+          title: "Success",
+          description: "Logged in successfully",
+        });
+        
+        if (rememberMe) {
+          localStorage.setItem("rememberEmail", data.email);
+        } else {
+          localStorage.removeItem("rememberEmail");
+        }
+        
+        router.push(ROUTES.DASHBOARD);
       } else {
-        localStorage.removeItem("rememberEmail");
+        throw new Error("Invalid response");
       }
-      
-      router.push(ROUTES.DASHBOARD);
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.response?.data?.message || "Login failed. Using demo mode.",
+        description: error.response?.data?.message || "Invalid username or password",
         variant: "destructive",
       });
-      const authData = {
-        user: {
-          id: "1",
-          email: data.email,
-          name: "Demo User",
-          role: UserRole.USER,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-        token: "mock-jwt-token-" + Date.now(),
-      };
-      setAuth(authData);
-      router.push(ROUTES.DASHBOARD);
     } finally {
       setIsLoading(false);
     }
@@ -125,10 +104,10 @@ export default function LoginPage() {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            {/* Email Field */}
+            {/* Username/Email Field */}
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium">
-                Email Address
+                Username or Email
               </Label>
               <div className="relative">
                 <Mail 
@@ -138,8 +117,8 @@ export default function LoginPage() {
                 />
                 <Input
                   id="email"
-                  type="email"
-                  placeholder="name@example.com"
+                  type="text"
+                  placeholder="Enter username or email"
                   className={`pl-11 h-12 text-base ${
                     errors.email 
                       ? "border-destructive focus-visible:ring-destructive" 
@@ -151,13 +130,6 @@ export default function LoginPage() {
                   onFocus={() => setFocusedField("email")}
                   onBlur={() => setFocusedField(null)}
                 />
-                {emailValue && !errors.email && (
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-green-500 flex items-center justify-center">
-                    <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                )}
               </div>
               {errors.email && (
                 <p className="text-sm text-destructive mt-1">

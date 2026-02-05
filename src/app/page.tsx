@@ -98,13 +98,13 @@ const testimonials = [
   {
     name: "B V Srinivasababu",
     position: "Sr Manager - IT Applications NSL",
-    content: "GST Portal helped me to Generate the e-Invoices and e-Way Bills in a single click. The system is efficient, simple and cost effective. Highly recommended for businesses of all sizes.",
+    content: "GSTSahayak helped me to Generate the e-Invoices and e-Way Bills in a single click. The system is efficient, simple and cost effective. Highly recommended for businesses of all sizes.",
     rating: 5,
   },
   {
     name: "CA Atul Garg",
     position: "Finance Controller - WheelsEye",
-    content: "GST Portal is solving GST complex problem like E Invoicing, e-Way Bill with Ease and Simple interface. I recommend to use GST Portal for all your GST needs to make your system future ready.",
+    content: "GSTSahayak is solving GST complex problem like E Invoicing, e-Way Bill with Ease and Simple interface. I recommend to use GSTSahayak for all your GST needs to make your system future ready.",
     rating: 5,
   },
 ];
@@ -118,28 +118,28 @@ const stats = [
 
 const faqs = [
   {
-    question: "What is GST Portal GST software?",
-    answer: "GST Portal is a comprehensive solution that enables businesses to manage their Goods and Services Tax (GST) compliance processes. It simplifies GST calculations, facilitates invoice generation, streamlines return filing, and helps maintain accurate GST records.",
+    question: "What is GSTSahayak GST software?",
+    answer: "GSTSahayak is a comprehensive solution that enables businesses to manage their Goods and Services Tax (GST) compliance processes. It simplifies GST calculations, facilitates invoice generation, streamlines return filing, and helps maintain accurate GST records.",
   },
   {
-    question: "What is GST Portal e-Invoice software?",
-    answer: "GST Portal e-Invoice software automates the generation, validation, and management of electronic invoices in compliance with regulatory requirements. It simplifies creating and processing e-Invoices, reducing manual efforts and enhancing efficiency.",
+    question: "What is GSTSahayak e-Invoice software?",
+    answer: "GSTSahayak e-Invoice software automates the generation, validation, and management of electronic invoices in compliance with regulatory requirements. It simplifies creating and processing e-Invoices, reducing manual efforts and enhancing efficiency.",
   },
   {
-    question: "What is GST Portal e-Way Bill software?",
-    answer: "GST Portal e-Way Bill software streamlines the generation and management of electronic waybills for the seamless transportation of goods. It ensures compliance with e-Way Bill regulations by simplifying the e-Way Bill generation process and providing real-time tracking.",
+    question: "What is GSTSahayak e-Way Bill software?",
+    answer: "GSTSahayak e-Way Bill software streamlines the generation and management of electronic waybills for the seamless transportation of goods. It ensures compliance with e-Way Bill regulations by simplifying the e-Way Bill generation process and providing real-time tracking.",
   },
   {
-    question: "How do I access GST Portal?",
-    answer: "Accessing GST Portal is simple and hassle-free. All you need is an internet connection and a web browser. Just navigate to the website and log in to your account directly from your browser. No software installation is required, making it convenient and accessible from any device.",
+    question: "How do I access GSTSahayak?",
+    answer: "Accessing GSTSahayak is simple and hassle-free. All you need is an internet connection and a web browser. Just navigate to the website and log in to your account directly from your browser. No software installation is required, making it convenient and accessible from any device.",
   },
   {
     question: "What kind of support is available?",
-    answer: "GST Portal offers comprehensive support for its software. Our dedicated support team can assist you with any questions, issues, or technical challenges. We provide timely responses, troubleshooting assistance, and guidance to ensure a smooth experience.",
+    answer: "GSTSahayak offers comprehensive support for its software. Our dedicated support team can assist you with any questions, issues, or technical challenges. We provide timely responses, troubleshooting assistance, and guidance to ensure a smooth experience.",
   },
   {
-    question: "How secure is GST Portal?",
-    answer: "GST Portal prioritizes the security of its software. We implement industry-standard security measures, including encryption, secure data transmission, and regular security audits, to protect your data and guard against unauthorized access.",
+    question: "How secure is GSTSahayak?",
+    answer: "GSTSahayak prioritizes the security of its software. We implement industry-standard security measures, including encryption, secure data transmission, and regular security audits, to protect your data and guard against unauthorized access.",
   },
 ];
 
@@ -153,7 +153,7 @@ export default function LandingPage() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold">
               G
             </div>
-            <span className="text-xl font-bold">GST Portal</span>
+            <span className="text-xl font-bold">GSTSahayak</span>
           </div>
           <div className="hidden items-center gap-6 md:flex">
             <Link href="#products" className="text-sm font-medium hover:text-primary">
@@ -335,7 +335,7 @@ export default function LandingPage() {
           <ScrollAnimation>
             <div className="mx-auto max-w-2xl text-center mb-16">
               <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
-                Why Choose GST Portal?
+                Why Choose GSTSahayak?
               </h2>
               <p className="text-lg text-muted-foreground">
                 Built for Indian businesses, designed for compliance
@@ -473,7 +473,7 @@ export default function LandingPage() {
                 Frequently Asked Questions
               </h2>
               <p className="text-lg text-muted-foreground">
-                Everything you need to know about GST Portal
+                Everything you need to know about GSTSahayak
               </p>
             </div>
             <div className="space-y-4">
@@ -504,7 +504,7 @@ export default function LandingPage() {
                   Ready to Simplify Your GST Billing?
                 </CardTitle>
                 <CardDescription className="text-lg">
-                  Join thousands of businesses already using GST Portal
+                  Join thousands of businesses already using GSTSahayak
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col items-center justify-center gap-4 sm:flex-row relative z-10">
@@ -543,7 +543,7 @@ export default function LandingPage() {
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold">
                   G
                 </div>
-                <span className="text-lg font-bold">GST Portal</span>
+                <span className="text-lg font-bold">GSTSahayak</span>
               </div>
               <p className="text-sm text-muted-foreground mb-4">
                 Complete GST billing solution for Indian businesses. GSP certified and ISO certified.
@@ -649,8 +649,8 @@ export default function LandingPage() {
               </div>
             </div>
             <div className="text-center text-sm text-muted-foreground">
-              <p>© {new Date().getFullYear()} GST Portal. All rights reserved. | GSP Certified | ISO Certified</p>
-              <p className="mt-2 text-xs">GST Portal - A product of GST Solutions India Private Limited</p>
+              <p>© {new Date().getFullYear()} GSTSahayak. All rights reserved. | GSP Certified | ISO Certified</p>
+              <p className="mt-2 text-xs">GSTSahayak - A product of GST Solutions India Private Limited</p>
             </div>
           </div>
         </div>
