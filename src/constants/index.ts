@@ -48,6 +48,7 @@ export const ROUTES = {
   },
   SUBSCRIPTION: "/subscription",
   PROFILE: "/profile",
+  PAYMENT: "/payment",
 } as const;
 
 export const SUBSCRIPTION_PLANS = {
