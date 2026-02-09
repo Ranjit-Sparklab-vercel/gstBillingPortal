@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,12 +9,13 @@ import { StatusBadge } from "@/components/common/status-badge";
 import { Loader } from "@/components/common/loader";
 import { Check, Calendar } from "lucide-react";
 import { SubscriptionPlan, SubscriptionStatus } from "@/types";
-import { SUBSCRIPTION_PLANS } from "@/constants";
+import { SUBSCRIPTION_PLANS, ROUTES } from "@/constants";
 import { formatDate, formatCurrency } from "@/lib/utils";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
 import api from "@/lib/api";
 
 export default function SubscriptionPage() {
+  const router = useRouter();
   const { subscriptions, setSubscriptions, isPlanActive } = useSubscriptionStore();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -61,16 +63,9 @@ export default function SubscriptionPage() {
     fetchSubscriptions();
   }, [setSubscriptions]);
 
-  const handleSubscribe = async (plan: SubscriptionPlan) => {
-    try {
-      // Mock subscription - replace with actual payment integration
-      const response = await api.post("/subscriptions", { plan });
-      if (response.data) {
-        setSubscriptions([...subscriptions, response.data]);
-      }
-    } catch (error) {
-      console.error("Subscription failed:", error);
-    }
+  const handleSubscribe = (plan: SubscriptionPlan) => {
+    // Redirect to payment page with plan parameter
+    router.push(`${ROUTES.PAYMENT}?plan=${plan}`);
   };
 
   if (isLoading) {
