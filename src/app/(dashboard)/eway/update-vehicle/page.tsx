@@ -20,7 +20,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,7 +42,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { EWayBillVehicleHistory } from "@/types";
 
-export default function UpdateVehiclePage() {
+function UpdateVehiclePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -563,5 +563,17 @@ export default function UpdateVehiclePage() {
         </Card>
       )}
     </div>
+  );
+}
+
+export default function UpdateVehiclePage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-64">
+        <Loader size="lg" />
+      </div>
+    }>
+      <UpdateVehiclePageContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import { ROUTES, SUBSCRIPTION_PLANS } from "@/constants";
 import { SubscriptionPlan } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 
-export default function PaymentPage() {
+function PaymentPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const planKey = searchParams.get("plan") as SubscriptionPlan | null;
@@ -232,5 +232,17 @@ export default function PaymentPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PaymentPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-64">
+        <Loader size="lg" />
+      </div>
+    }>
+      <PaymentPageContent />
+    </Suspense>
   );
 }

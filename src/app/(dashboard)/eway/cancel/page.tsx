@@ -12,7 +12,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,7 +48,7 @@ const CANCEL_REASON_CODES = [
   { value: "5", label: "Other" },
 ] as const;
 
-export default function CancelEWayBillPage() {
+function CancelEWayBillPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -527,5 +527,17 @@ export default function CancelEWayBillPage() {
         </DialogContent>
       </Dialog>
     </div>
+  );
+}
+
+export default function CancelEWayBillPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-64">
+        <Loader size="lg" />
+      </div>
+    }>
+      <CancelEWayBillPageContent />
+    </Suspense>
   );
 }

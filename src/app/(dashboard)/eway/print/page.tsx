@@ -14,7 +14,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,7 +41,7 @@ import { EWayBill } from "@/types";
 import { downloadEWayBillPDF, printEWayBillPDF, EWayBillPDFData } from "@/lib/ewaybill-pdf-generator";
 import { EWayBillPrintLayout } from "@/components/eway/EWayBillPrintLayout";
 
-export default function EWayBillPrintPage() {
+function EWayBillPrintPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -493,5 +493,17 @@ export default function EWayBillPrintPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function EWayBillPrintPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-64">
+        <Loader size="lg" />
+      </div>
+    }>
+      <EWayBillPrintPageContent />
+    </Suspense>
   );
 }

@@ -13,7 +13,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,7 +36,7 @@ import { einvoiceService } from "@/services/gst/einvoice.service";
 import { gstAuthService } from "@/services/gst/auth.service";
 import { GST_API_CONFIG } from "@/config/gstApi.config";
 
-export default function IRNLinkedEWayBillViewPage() {
+function IRNLinkedEWayBillViewPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -525,5 +525,17 @@ export default function IRNLinkedEWayBillViewPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function IRNLinkedEWayBillViewPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-64">
+        <Loader size="lg" />
+      </div>
+    }>
+      <IRNLinkedEWayBillViewPageContent />
+    </Suspense>
   );
 }
