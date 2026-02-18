@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -48,7 +48,7 @@ type SortDirection = "asc" | "desc";
 
 const ITEMS_PER_PAGE = 10;
 
-export default function EInvoicesPage() {
+function EInvoicesPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -690,5 +690,17 @@ export default function EInvoicesPage() {
         </DialogContent>
       </Dialog>
     </div>
+  );
+}
+
+export default function EInvoicesPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-64">
+        <Loader size="lg" />
+      </div>
+    }>
+      <EInvoicesPageContent />
+    </Suspense>
   );
 }
