@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -25,6 +26,7 @@ import {
   Printer,
   Link as LinkIcon,
 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { ROUTES } from "@/constants";
 import { LucideIcon } from "lucide-react";
 
@@ -282,6 +284,7 @@ function isRouteActive(pathname: string, href: string, exact: boolean): boolean 
 
 export function Sidebar() {
   const pathname = usePathname();
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Determine which menu to show based on current route
   let menuItems: MenuItem[] = mainMenuItems;
@@ -301,6 +304,20 @@ export function Sidebar() {
     moduleTitle = "E-Invoice";
     backToDashboard = true;
   }
+
+  // Filter menu items based on search query
+  const filteredMenuItems = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return menuItems;
+    }
+
+    const query = searchQuery.toLowerCase().trim();
+    return menuItems.filter((item) => {
+      const titleMatch = item.title.toLowerCase().includes(query);
+      const hrefMatch = item.href.toLowerCase().includes(query);
+      return titleMatch || hrefMatch;
+    });
+  }, [menuItems, searchQuery]);
 
   return (
     <div className="flex h-screen w-64 flex-col border-r bg-card">
@@ -327,9 +344,34 @@ export function Sidebar() {
         </div>
       )}
 
+      {/* Search Bar */}
+      <div className="border-b px-4 py-3">
+        <div className="relative">
+          <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search menu..."
+            className="pl-8 h-9 text-sm"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                setSearchQuery("");
+              }
+            }}
+          />
+        </div>
+      </div>
+
       {/* Navigation */}
       <nav className="flex-1 space-y-1 overflow-y-auto p-4 sidebar-scrollbar">
-        {menuItems.map((item) => {
+        {filteredMenuItems.length === 0 ? (
+          <div className="text-center py-8 text-sm text-muted-foreground">
+            <p>No menu items found</p>
+            <p className="text-xs mt-1">Try a different search term</p>
+          </div>
+        ) : (
+          filteredMenuItems.map((item) => {
           const Icon = item.icon;
           const isActive = isRouteActive(pathname, item.href, item.exact ?? false);
           // Temporarily disable GST Billing from main menu
@@ -365,7 +407,8 @@ export function Sidebar() {
               {item.title}
             </Link>
           );
-        })}
+          })
+        )}
       </nav>
 
       {/* Version Info - Sticky at bottom */}

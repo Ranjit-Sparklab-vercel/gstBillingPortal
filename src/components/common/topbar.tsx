@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Calculator as CalculatorComponent } from "@/components/common/calculator";
 import { CalculatorIcon } from "@/components/common/calculator-icon";
 import { ProfileDialog } from "@/components/common/profile-dialog";
+import { GlobalSearchDialog } from "@/components/common/global-search-dialog";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants";
@@ -16,6 +17,8 @@ export function Topbar() {
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const userMenuRef = useRef<HTMLDivElement>(null);
   const { user, logout } = useAuthStore();
   const router = useRouter();
@@ -35,6 +38,15 @@ export function Topbar() {
   const handleMyProfile = () => {
     setIsProfileOpen(true);
     setIsUserMenuOpen(false);
+  };
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (searchQuery.trim()) {
+        setIsSearchDialogOpen(true);
+      }
+    }
   };
 
   // Close dropdown when clicking outside
@@ -62,8 +74,11 @@ export function Topbar() {
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search..."
+              placeholder="Search across all invoices, bills, customers, products... (Press Enter)"
               className="pl-9"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
             />
           </div>
         </div>
@@ -139,6 +154,18 @@ export function Topbar() {
       <ProfileDialog
         open={isProfileOpen}
         onOpenChange={setIsProfileOpen}
+      />
+
+      {/* Global Search Dialog */}
+      <GlobalSearchDialog
+        open={isSearchDialogOpen}
+        onOpenChange={(open) => {
+          setIsSearchDialogOpen(open);
+          if (!open) {
+            setSearchQuery("");
+          }
+        }}
+        initialQuery={searchQuery}
       />
     </>
   );
