@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,6 +50,7 @@ const ITEMS_PER_PAGE = 10;
 
 export default function EInvoicesPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
   const [einvoices, setEinvoices] = useState<EInvoice[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -73,6 +74,14 @@ export default function EInvoicesPage() {
   // Dialog
   const [selectedEInvoice, setSelectedEInvoice] = useState<EInvoice | null>(null);
   const [isQRDialogOpen, setIsQRDialogOpen] = useState(false);
+
+  // Read search query from URL on mount
+  useEffect(() => {
+    const searchParam = searchParams.get("search");
+    if (searchParam) {
+      setSearchQuery(searchParam);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     authenticate();

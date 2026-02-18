@@ -53,18 +53,18 @@ export default function LoginPage() {
       
       if (response.data) {
         setAuth(response.data);
-        toast({
-          title: "Success",
-          description: "Logged in successfully",
-        });
-        
-        if (rememberMe) {
-          localStorage.setItem("rememberEmail", data.email);
-        } else {
-          localStorage.removeItem("rememberEmail");
-        }
-        
-        router.push(ROUTES.DASHBOARD);
+      toast({
+        title: "Success",
+        description: "Logged in successfully",
+      });
+      
+      if (rememberMe) {
+        localStorage.setItem("rememberEmail", data.email);
+      } else {
+        localStorage.removeItem("rememberEmail");
+      }
+      
+      router.push(ROUTES.DASHBOARD);
       } else {
         throw new Error("Invalid response");
       }
