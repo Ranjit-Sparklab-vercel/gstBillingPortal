@@ -64,7 +64,7 @@ export default function ProfilePage() {
                   <Phone className="h-4 w-4" />
                   Phone Number
                 </div>
-                <p className="text-base font-medium">{displayUser.phone || "Not provided"}</p>
+                <p className="text-base font-medium">{"phone" in displayUser ? displayUser.phone : "Not provided"}</p>
               </div>
 
               <div className="space-y-2">
@@ -72,7 +72,7 @@ export default function ProfilePage() {
                   <Building className="h-4 w-4" />
                   Company Name
                 </div>
-                <p className="text-base font-medium">{displayUser.company || "Not provided"}</p>
+                <p className="text-base font-medium">{"company" in displayUser ? displayUser.company : "Not provided"}</p>
               </div>
             </div>
           </CardContent>
@@ -96,24 +96,24 @@ export default function ProfilePage() {
                   <MapPin className="h-4 w-4" />
                   Address
                 </div>
-                <p className="text-base font-medium">{displayUser.address || "Not provided"}</p>
+                <p className="text-base font-medium">{"address" in displayUser ? displayUser.address : "Not provided"}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <div className="text-sm font-medium text-muted-foreground">City</div>
-                  <p className="text-base font-medium">{displayUser.city || "Not provided"}</p>
+                  <p className="text-base font-medium">{"city" in displayUser ? displayUser.city : "Not provided"}</p>
                 </div>
 
                 <div className="space-y-2">
                   <div className="text-sm font-medium text-muted-foreground">State</div>
-                  <p className="text-base font-medium">{displayUser.state || "Not provided"}</p>
+                  <p className="text-base font-medium">{"state" in displayUser ? displayUser.state : "Not provided"}</p>
                 </div>
               </div>
 
               <div className="space-y-2">
                 <div className="text-sm font-medium text-muted-foreground">Pincode</div>
-                <p className="text-base font-medium">{displayUser.pincode || "Not provided"}</p>
+                <p className="text-base font-medium">{"pincode" in displayUser ? displayUser.pincode : "Not provided"}</p>
               </div>
             </div>
           </CardContent>

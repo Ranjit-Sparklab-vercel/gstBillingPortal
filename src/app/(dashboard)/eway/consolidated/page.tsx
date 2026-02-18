@@ -534,7 +534,14 @@ export default function ConsolidatedEWayBillPage() {
                         </TableCell>
                         <TableCell>{formatDate(bill.validUntil)}</TableCell>
                         <TableCell>
-                          <StatusBadge status={bill.status} />
+                          <StatusBadge 
+                            status={
+                              bill.status === "RECEIVED" ? "ACTIVE" :
+                              bill.status === "ACCEPTED" ? "ACTIVE" :
+                              bill.status === "REJECTED" ? "CANCELLED" :
+                              bill.status
+                            } 
+                          />
                         </TableCell>
                       </TableRow>
                     );

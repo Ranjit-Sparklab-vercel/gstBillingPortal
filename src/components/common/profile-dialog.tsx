@@ -101,6 +101,7 @@ export function ProfileDialog({ open, onOpenChange }: ProfileDialogProps) {
       state: displayUser.state || "",
       pincode: displayUser.pincode || "",
       company: displayUser.company || "",
+      gstin: displayUser.gstin || "",
     });
     setIsEditMode(false);
   };

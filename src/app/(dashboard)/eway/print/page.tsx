@@ -318,7 +318,14 @@ export default function EWayBillPrintPage() {
                   </CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
-                  <StatusBadge status={ewayBillData.status} />
+                  <StatusBadge 
+                    status={
+                      ewayBillData.status === "RECEIVED" ? "ACTIVE" :
+                      ewayBillData.status === "ACCEPTED" ? "ACTIVE" :
+                      ewayBillData.status === "REJECTED" ? "CANCELLED" :
+                      ewayBillData.status
+                    } 
+                  />
                 </div>
               </div>
             </CardHeader>
@@ -377,7 +384,14 @@ export default function EWayBillPrintPage() {
                     <tr>
                       <td className="border border-gray-400 px-4 py-2 font-semibold">Status</td>
                       <td className="border border-gray-400 px-4 py-2">
-                        <StatusBadge status={ewayBillData.status} />
+                        <StatusBadge 
+                          status={
+                            ewayBillData.status === "RECEIVED" ? "ACTIVE" :
+                            ewayBillData.status === "ACCEPTED" ? "ACTIVE" :
+                            ewayBillData.status === "REJECTED" ? "CANCELLED" :
+                            ewayBillData.status
+                          } 
+                        />
                       </td>
                     </tr>
                   </tbody>

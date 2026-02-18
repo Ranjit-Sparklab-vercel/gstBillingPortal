@@ -25,16 +25,16 @@ export const CalculatorIcon = ({ className = "h-6 w-6" }: { className?: string }
       }}
       style={{
         userSelect: 'none',
-        WebkitUserDrag: 'none',
-        WebkitUserSelect: 'none',
-        MozUserSelect: 'none',
-        msUserSelect: 'none',
+        WebkitUserDrag: 'none' as any,
+        WebkitUserSelect: 'none' as any,
+        MozUserSelect: 'none' as any,
+        msUserSelect: 'none' as any,
         touchAction: 'none',
         pointerEvents: 'auto',
-      }}
+      } as React.CSSProperties}
     >
       <img
-        src={calculatorImage.src || calculatorImage}
+        src={typeof calculatorImage === 'string' ? calculatorImage : calculatorImage.src}
         alt="Calculator"
         className="w-full h-full object-cover rounded-full"
         draggable="false"
@@ -55,12 +55,12 @@ export const CalculatorIcon = ({ className = "h-6 w-6" }: { className?: string }
           imageRendering: 'crisp-edges',
           userSelect: 'none',
           pointerEvents: 'none',
-          WebkitUserDrag: 'none',
-          WebkitUserSelect: 'none',
-          MozUserSelect: 'none',
-          msUserSelect: 'none',
+          WebkitUserDrag: 'none' as any,
+          WebkitUserSelect: 'none' as any,
+          MozUserSelect: 'none' as any,
+          msUserSelect: 'none' as any,
           touchAction: 'none',
-        }}
+        } as React.CSSProperties}
       />
     </div>
   );
