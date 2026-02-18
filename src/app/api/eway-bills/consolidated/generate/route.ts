@@ -90,7 +90,7 @@ export async function POST(request: Request) {
     }
 
     // Extract Consolidated E-Way Bill number from response
-    const consolidatedEWBNo = consolidatedResponse.data?.consolidatedEWBNo || 
+    const consolidatedEWBNo = (consolidatedResponse.data as any)?.consolidatedEWBNo || 
                              consolidatedResponse.data?.ewayBillNo ||
                              `CEWB-${Date.now()}`;
 

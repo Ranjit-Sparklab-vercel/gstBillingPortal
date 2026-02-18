@@ -427,7 +427,14 @@ export default function EWayBillsPage() {
                         <TableCell>{formatDate(bill.createdAt)}</TableCell>
                         <TableCell>{formatDate(bill.validUntil)}</TableCell>
                         <TableCell>
-                          <StatusBadge status={bill.status} />
+                          <StatusBadge 
+                            status={
+                              bill.status === "RECEIVED" ? "ACTIVE" :
+                              bill.status === "ACCEPTED" ? "ACTIVE" :
+                              bill.status === "REJECTED" ? "CANCELLED" :
+                              bill.status
+                            } 
+                          />
                         </TableCell>
                         <TableCell>
                           <Button

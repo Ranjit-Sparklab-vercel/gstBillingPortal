@@ -2219,9 +2219,9 @@ export default function GenerateEInvoicePage() {
           return false;
         }}
         style={{
-          WebkitUserDrag: 'none',
+          WebkitUserDrag: 'none' as any,
           userSelect: 'none',
-        }}
+        } as React.CSSProperties}
       >
         <CalculatorIcon className="h-14 w-14 rounded-full" />
       </button>
