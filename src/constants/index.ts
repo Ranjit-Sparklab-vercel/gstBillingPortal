@@ -1,4 +1,7 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/api";
+// Use relative URL for Next.js API routes (same domain)
+// This works for both localhost and production (Vercel)
+// Set NEXT_PUBLIC_API_BASE_URL env var only if you need a different API server
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "/api";
 
 export const GST_API_ENV = {
   SANDBOX: "sandbox",

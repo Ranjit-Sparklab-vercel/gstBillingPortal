@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { UserRole } from "@/types";
+import { corsHeaders, handleCorsPreflight } from "@/lib/cors-headers";
 
 // Mock API route - Replace with actual backend integration
 export async function POST(request: Request) {
@@ -20,20 +21,36 @@ export async function POST(request: Request) {
 
       const mockToken = `mock-jwt-token-${Date.now()}`;
 
-      return NextResponse.json({
-        user: mockUser,
-        token: mockToken,
-      });
+      return NextResponse.json(
+        {
+          user: mockUser,
+          token: mockToken,
+        },
+        {
+          headers: corsHeaders,
+        }
+      );
     }
 
     return NextResponse.json(
       { message: "Invalid data" },
-      { status: 400 }
+      { 
+        status: 400,
+        headers: corsHeaders,
+      }
     );
   } catch (error) {
     return NextResponse.json(
       { message: "Internal server error" },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: corsHeaders,
+      }
     );
   }
+}
+
+// Handle OPTIONS request for CORS preflight
+export async function OPTIONS() {
+  return handleCorsPreflight();
 }
