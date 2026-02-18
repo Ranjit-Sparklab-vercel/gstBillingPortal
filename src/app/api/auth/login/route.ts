@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { UserRole } from "@/types";
+import { corsHeaders, handleCorsPreflight } from "@/lib/cors-headers";
 
 // Default login credentials
 const VALID_CREDENTIALS = [
@@ -43,20 +44,36 @@ export async function POST(request: Request) {
     if (validCredential) {
       const mockToken = `mock-jwt-token-${Date.now()}`;
 
-      return NextResponse.json({
-        user: validCredential.user,
-        token: mockToken,
-      });
+      return NextResponse.json(
+        {
+          user: validCredential.user,
+          token: mockToken,
+        },
+        {
+          headers: corsHeaders,
+        }
+      );
     }
 
     return NextResponse.json(
       { message: "Invalid username or password" },
-      { status: 401 }
+      { 
+        status: 401,
+        headers: corsHeaders,
+      }
     );
   } catch (error) {
     return NextResponse.json(
       { message: "Internal server error" },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: corsHeaders,
+      }
     );
   }
+}
+
+// Handle OPTIONS request for CORS preflight
+export async function OPTIONS() {
+  return handleCorsPreflight();
 }
