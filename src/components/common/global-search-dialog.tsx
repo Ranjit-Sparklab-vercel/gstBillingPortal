@@ -353,7 +353,7 @@ export function GlobalSearchDialog({
             </div>
           ) : results.length === 0 ? (
             <div className="py-8 text-center text-sm text-muted-foreground">
-              No results found for "{searchQuery}"
+              No results found for &quot;{searchQuery}&quot;
             </div>
           ) : (
             <div className="space-y-6 pt-4">
